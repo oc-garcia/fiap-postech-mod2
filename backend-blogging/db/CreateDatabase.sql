@@ -3,6 +3,7 @@ CREATE DATABASE backendblog;
 
 CREATE TABLE "user"(
     id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255),
     cpf VARCHAR(11) NOT NULL,
@@ -32,6 +33,6 @@ CREATE TABLE post(
     FOREIGN KEY (author) REFERENCES "user" (id) ON DELETE CASCADE
 );
 
-INSERT INTO "user"( name, email, cpf, password)
-VALUES ('admin', 'admin@hotmail.com','12345678912', 'admin');
+INSERT INTO "user"(username, name, email, cpf, password)
+VALUES ('admin','administrador', 'admin@hotmail.com','12345678912', 'admin');
 

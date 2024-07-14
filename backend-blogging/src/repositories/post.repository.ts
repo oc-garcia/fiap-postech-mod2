@@ -54,7 +54,7 @@ export class PostRepository implements IPostRepository {
       [id],
     )
 
-    return result?.rows[0]
+    return result?.rows[0] || undefined
   }
 
   public async findOnePage(

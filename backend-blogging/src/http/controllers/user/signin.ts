@@ -1,3 +1,4 @@
+import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
 import { makeSigninUseCase } from '@/use-cases/factory/make-signin-use-case'
 import { compare } from 'bcryptjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -18,7 +19,7 @@ export async function signin(request: FastifyRequest, reply: FastifyReply) {
   const doestPasswordMatch = await compare(password, user.password)
 
   if (!doestPasswordMatch) {
-    throw new Error()
+    throw new InvalidCredentialsError()
   }
 
   const token = await reply.jwtSign({ id: user.id, username: user.username })

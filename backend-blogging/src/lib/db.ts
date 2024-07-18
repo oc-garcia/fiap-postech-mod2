@@ -18,13 +18,18 @@ class Database {
     this.connection()
   }
 
-  private async connection() {
+  private async connection(attempt: number = 1) {
     try {
       this.client = await this.pool.connect()
     } catch (error) {
-      console.error(`erro na conexão, erro ${error}`)
-
-      throw new Error(`erro na conexão, erro ${error}`)
+      console.error(`Connection attempt ${attempt} failed, error: ${error}`)
+      if (attempt < 5) {
+        console.log(`Retrying connection attempt ${attempt + 1}`)
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        this.connection(attempt + 1)
+      } else {
+        throw new Error(`All connection attempts failed, error: ${error}`)
+      }
     }
   }
 

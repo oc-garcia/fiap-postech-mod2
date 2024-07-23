@@ -2,7 +2,7 @@ version: "3.8"
 services:
   app:
     build:
-      context: .
+      context: . 
       args:
         DOCKER_TAG: ${DOCKER_TAG:-latest}
     image: $DOCKER_USERNAME/backendblogging:${DOCKER_TAG}

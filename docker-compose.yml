@@ -6,24 +6,14 @@ services:
       - "3010:3010"
     depends_on:
       - postgres
-    environment:
-      PORT: ${PORT:-3010}
-      ENV: ${ENV:-development}
-      DATABASE_USER: ${DATABASE_USER:-root}
-      DATABASE_HOST: ${DATABASE_HOST:-postgres}
-      DATABASE_NAME: ${DATABASE_NAME:-backendblogging}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-12345678}
-      DATABASE_PORT: ${DATABASE_PORT:-5432}
-      JWT_SECRET: ${JWT_SECRET:-batman}
-      DATABASE_URL: ${DATABASE_URL:-postgres://root:12345678@postgres:5432/backendblogging}
+    env_file:
+      - .env
 
   postgres:
     image: postgres:latest
     volumes:
       - ./db/:/docker-entrypoint-initdb.d/:ro
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-backendblogging}
-      POSTGRES_USER: ${POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-12345678}
+    env_file:
+      - .env
     ports:
       - "5432:5432"

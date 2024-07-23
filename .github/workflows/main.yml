@@ -20,6 +20,8 @@ jobs:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DOCKER_TAG: latest
+
 
     steps:
       - uses: actions/checkout@v4
@@ -44,7 +46,7 @@ jobs:
 
       - name: Build Docker Images with Docker Compose
         run: |
-          docker-compose -f docker-compose.yml build --build-arg DOCKER_TAG=latest
+          docker-compose -f docker-compose.yml build --build-arg DOCKER_TAG=${{ env.DOCKER_TAG }}
 
       - name: Push Docker Images with Docker Compose
         run: docker-compose -f docker-compose.yml push

@@ -1,31 +1,39 @@
 import { env } from '@/env'
 import { Pool, PoolClient } from 'pg'
 
-const CONFIG = {
-  user: env.DATABASE_USER,
-  host: env.DATABASE_HOST,
-  database: env.DATABASE_NAME,
-  password: env.DATABASE_PASSWORD,
-  port: env.DATABASE_PORT,
-}
+const connectionString =
+  process.env.DB_URL ||
+  `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@postgres:${env.DATABASE_PORT}/${env.DATABASE_NAME}`;
 
 class Database {
   private pool: Pool
   private client: PoolClient | undefined
 
   constructor() {
-    this.pool = new Pool(CONFIG)
+    this.pool = new Pool({
+      connectionString,
+    })
+
+    this.pool.on('error', (err) => {
+      console.error('Unexpected error on idle client', err)
+      process.exit(-1) // Or handle gracefully
+    })
+
     this.connection()
   }
 
   private async connection(attempt: number = 1) {
     try {
       this.client = await this.pool.connect()
+      console.log('Connected to PostgreSQL!')
     } catch (error) {
       console.error(`Connection attempt ${attempt} failed, error: ${error}`)
       if (attempt < 5) {
-        console.log(`Retrying connection attempt ${attempt + 1}`)
-        await new Promise((resolve) => setTimeout(resolve, 5000))
+        const delay = 2 ** attempt * 1000 // Exponential backoff
+        console.log(
+          `Retrying connection attempt ${attempt + 1} in ${delay / 1000}s`,
+        )
+        await new Promise((resolve) => setTimeout(resolve, delay))
         this.connection(attempt + 1)
       } else {
         throw new Error(`All connection attempts failed, error: ${error}`)
@@ -33,7 +41,7 @@ class Database {
     }
   }
 
-  get clientIstance() {
+  get clientInstance() {
     return this.client
   }
 }

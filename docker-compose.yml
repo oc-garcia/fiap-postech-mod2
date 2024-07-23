@@ -1,7 +1,11 @@
 version: "3.8"
 services:
   app:
-    image: $DOCKER_USERNAME/backendblogging:latest
+    build:
+      context: .
+      args:
+        DOCKER_TAG: ${DOCKER_TAG:-latest}
+    image: $DOCKER_USERNAME/backendblogging:${DOCKER_TAG}
     ports:
       - "3010:3010"
     depends_on:

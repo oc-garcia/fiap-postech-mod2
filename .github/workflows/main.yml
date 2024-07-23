@@ -43,17 +43,8 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build Docker Images with Docker Compose
-        run: docker-compose -f docker-compose.yml build
-
-      - name: Tag Docker Image with 'latest'
         run: |
-          IMAGE_ID=$(docker-compose -f docker-compose.yml images -q app)
-          if [[ -z "$IMAGE_ID" ]]; then
-            echo "No image ID found for 'app'. Cannot tag image."
-            exit 1
-          else
-            docker tag $IMAGE_ID $DOCKER_USERNAME/backendblogging:latest
-          fi
+          docker-compose -f docker-compose.yml build --build-arg DOCKER_TAG=latest
 
       - name: Push Docker Images with Docker Compose
         run: docker-compose -f docker-compose.yml push

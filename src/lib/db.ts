@@ -3,7 +3,7 @@ import { Pool, PoolClient } from 'pg'
 
 const connectionString =
   process.env.DB_URL ||
-  `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@postgres:${env.DATABASE_PORT}/${env.DATABASE_NAME}`;
+  `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@postgres:${env.DATABASE_PORT}/${env.DATABASE_NAME}`
 
 class Database {
   private pool: Pool

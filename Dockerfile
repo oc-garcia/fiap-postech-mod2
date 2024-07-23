@@ -6,13 +6,9 @@ COPY package.json ./
 
 RUN npm install
 
-COPY . . 
-
-RUN apt-get update && apt-get install -y netcat 
+COPY . .
 
 RUN npm run build
-
-RUN chmod +x /usr/local/bin/wait-for-it.sh 
 
 EXPOSE 3010
 

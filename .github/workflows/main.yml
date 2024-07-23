@@ -47,7 +47,7 @@ jobs:
 
       - name: Tag Docker Image with 'latest'
         run: |
-          IMAGE_NAME=$(docker-compose -f docker-compose.yml images -q app)
+          IMAGE_NAME=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "backendblogging")
           docker tag $IMAGE_NAME $DOCKER_USERNAME/backendblogging:latest
 
       - name: Push Docker Images with Docker Compose

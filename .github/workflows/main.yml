@@ -47,8 +47,13 @@ jobs:
 
       - name: Tag Docker Image with 'latest'
         run: |
-          IMAGE_NAME=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "backendblogging")
-          docker tag $IMAGE_NAME $DOCKER_USERNAME/backendblogging:latest
+          IMAGE_ID=$(docker-compose -f docker-compose.yml images -q app)
+          if [[ -z "$IMAGE_ID" ]]; then
+            echo "No image ID found for 'app'. Cannot tag image."
+            exit 1
+          else
+            docker tag $IMAGE_ID $DOCKER_USERNAME/backendblogging:latest
+          fi
 
       - name: Push Docker Images with Docker Compose
         run: docker-compose -f docker-compose.yml push

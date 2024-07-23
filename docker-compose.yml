@@ -9,12 +9,13 @@ services:
     ports:
       - "3010:3010"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     networks:
       - mynetwork
-    command: sh -c "while ! nc -z postgres 5432; do sleep 1; done; npm start"
+    command: npm start
 
   postgres:
     image: postgres:latest

@@ -9,30 +9,27 @@ services:
     ports:
       - "3010:3010"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     env_file:
       - .env
     networks:
       - mynetwork
-    command: npm start
 
   postgres:
     image: postgres:latest
     volumes:
       - ./db/:/docker-entrypoint-initdb.d/:ro
+      - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
     ports:
       - "5432:5432"
     networks:
       - mynetwork
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 networks:
   mynetwork:
     driver: bridge
+
+volumes:
+  postgres_data:

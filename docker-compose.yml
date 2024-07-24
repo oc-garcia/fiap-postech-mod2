@@ -14,7 +14,9 @@ services:
     env_file:
       - .env
     networks:
-      - mynetwork
+      mynetwork:
+        aliases:
+          - app
 
   postgres:
     image: postgres:latest
@@ -26,7 +28,9 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - mynetwork
+      mynetwork:
+        aliases:
+          - postgres
 
 networks:
   mynetwork:

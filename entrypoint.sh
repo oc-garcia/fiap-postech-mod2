@@ -2,10 +2,19 @@
 
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
-while ! pg_isready -q -h postgres -p 5432; do
-  sleep 1
+for i in $(seq 1 30); do
+  if pg_isready -q -h postgres -p 5432; then
+    echo "PostgreSQL is up and running!"
+    break
+  fi
+  echo "PostgreSQL not yet ready. Waiting..."
+  sleep 5
 done
-echo "PostgreSQL is up and running!"
+
+if ! pg_isready -q -h postgres -p 5432; then
+  echo "PostgreSQL did not become ready in time. Exiting."
+  exit 1
+fi
 
 # Run the SQL script
 echo "Running SQL script..."

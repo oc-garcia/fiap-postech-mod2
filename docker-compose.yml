@@ -3,8 +3,10 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-    image: $DOCKER_USERNAME/backendblogging:latest
+      context: . 
+      args:
+        DOCKER_TAG: ${DOCKER_TAG:-latest}
+    image: $DOCKER_USERNAME/backendblogging:${DOCKER_TAG}
     ports:
       - "3010:3010"
     depends_on:
@@ -12,12 +14,7 @@ services:
     env_file:
       - .env
     networks:
-      mynetwork:
-        aliases:
-          - app
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d:ro
-      - ./entrypoint.sh:/usr/app/entrypoint.sh:ro
+      - mynetwork
 
   postgres:
     image: postgres:latest
@@ -29,9 +26,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      mynetwork:
-        aliases:
-          - postgres
+      - mynetwork
 
 networks:
   mynetwork:

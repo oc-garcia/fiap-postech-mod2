@@ -5,8 +5,6 @@ const connectionString =
   process.env.DB_URL ||
   `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@postgres:${env.DATABASE_PORT}/${env.DATABASE_NAME}`
 
-console.log(connectionString)
-
 class Database {
   private pool: Pool
   private client: PoolClient | undefined

@@ -13,6 +13,15 @@ services:
     networks:
       - mynetwork
     command: ["./wait-for-it.sh", "appdb:5432", "--", "node", "build/server"]
+    environment:
+      - PORT=${PORT}
+      - ENV=${ENV}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - JWT_SECRET=${JWT_SECRET}
 
   appdb:
     image: postgres:latest
@@ -24,6 +33,10 @@ services:
       - "5432:5432"
     networks:
       - mynetwork
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
 
 networks:
   mynetwork:

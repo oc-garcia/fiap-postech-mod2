@@ -2,7 +2,6 @@ FROM node:18-alpine
 
 WORKDIR /usr/app
 
-# Install bash
 RUN apk add --no-cache bash
 
 COPY package.json ./

@@ -16,10 +16,6 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      DB_URL: ${{ secrets.DB_URL }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       DOCKER_TAG: latest
 
     steps:
@@ -35,10 +31,6 @@ jobs:
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
           echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
 
       - name: Log in to Docker Hub
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD

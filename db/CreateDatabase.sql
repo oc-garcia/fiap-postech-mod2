@@ -1,6 +1,7 @@
+-- CreateDatabase.sql
 CREATE DATABASE backendblog;
-\c backendblog
 
+-- Create tables within the correct database
 CREATE TABLE "user"(
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
@@ -33,6 +34,6 @@ CREATE TABLE post(
     FOREIGN KEY (author) REFERENCES "user" (id) ON DELETE CASCADE
 );
 
+-- Insert data within the database
 INSERT INTO "user"(username, name, email, cpf, password)
 VALUES ('admin','administrador', 'admin@hotmail.com','12345678912', 'admin');
-

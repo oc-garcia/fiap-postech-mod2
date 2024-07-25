@@ -21,10 +21,11 @@ class Database {
   private async connection() {
     try {
       this.client = await this.pool.connect()
+      console.log('Conexão com o banco de dados realizada com sucesso!')
     } catch (error) {
-      console.error(`erro na conexão, erro ${error}`)
+      console.error(`Erro na conexão, erro: ${error}`)
 
-      throw new Error(`erro na conexão, erro ${error}`)
+      throw new Error(`Erro na conexão, erro: ${error}`)
     }
   }
 

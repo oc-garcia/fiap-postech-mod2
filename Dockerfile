@@ -18,4 +18,4 @@ RUN npm run build
 
 EXPOSE 3010
 
-CMD ["./wait-for-it.sh", "postgres:5432", "--", "node", "build/server"]
+CMD ["./wait-for-it.sh", "appdb:5432", "--", "node", "build/server"]

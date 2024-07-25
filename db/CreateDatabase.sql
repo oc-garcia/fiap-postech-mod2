@@ -1,5 +1,5 @@
 -- CreateDatabase.sql
-CREATE DATABASE backendblog;
+CREATE DATABASE appdb;
 
 -- Create tables within the correct database
 CREATE TABLE "user"(

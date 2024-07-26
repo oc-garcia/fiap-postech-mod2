@@ -2,11 +2,11 @@
   "name": "backend-blogging",
   "version": "1.0.0",
   "description": "pos tech fiap - tech challege modulo 2",
-  "main": "index.js",
+  "main": "./src/app.ts",
   "scripts": {
-    "start:dev": "tsx watch src/server.ts",
-    "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "start:dev": "tsx watch server/src/server.ts",
+    "start": "node server/build/server.js",
+    "build": "tsup server/src --out-dir server/build"
   },
   "keywords": [],
   "author": "",

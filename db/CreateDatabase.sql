@@ -1,7 +1,5 @@
--- CreateDatabase.sql
 CREATE DATABASE appdb;
 
--- Create tables within the correct database
 CREATE TABLE "user"(
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,

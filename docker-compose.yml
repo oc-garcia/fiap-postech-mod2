@@ -1,46 +1,90 @@
 services:
-  app:
+  server:
+    image: server:latest
+    container_name: backendblogging
     build:
-      context: . 
-      args:
-        DOCKER_TAG: ${DOCKER_TAG:-latest}
-    image: $DOCKER_USERNAME/backendblogging:${DOCKER_TAG}
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: .env
     ports:
-      - "3010:3010"
-    depends_on:
-      - appdb
-    restart: on-failure
-    networks:
-      - mynetwork
-    command: ["./wait-for-it.sh", "appdb:5432", "--", "node", "build/server"]
-    environment:
-      - PORT=${PORT}
-      - ENV=${ENV}
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
-      - JWT_SECRET=${JWT_SECRET}
-
-  appdb:
-    image: postgres:latest
+      - ${PORT}:${PORT}
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d/:ro
-      - appdb_data:/var/lib/postgresql/data
-    restart: on-failure
-    ports:
-      - "5432:5432"
-    networks:
-      - mynetwork
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      - ./server:/server
+      - server-node-modules:/server/node_modules
+    command: npm run start
+    depends_on:
+      database:
+        condition: service_healthy
 
-networks:
-  mynetwork:
-    driver: bridge
+  database:
+    image: database:latest
+    container_name: ${DATABASE_HOST}
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    volumes:
+      - database-v:/var/lib/postgresql/data
+    command: "-p ${DATABASE_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -p ${DATABASE_PORT} -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
+      start_period: 0s
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
-  appdb_data:
+  server-node-modules:
+    name: "server-node-modules"
+  database-v:
+    name: "database-v"
+
+
+# services:
+#   app:
+#     build:
+#       context: .
+#       args:
+#         DOCKER_TAG: ${DOCKER_TAG:-latest}
+#     image: $DOCKER_USERNAME/backendblogging:${DOCKER_TAG}
+#     ports:
+#       - "3010:3010"
+#     depends_on:
+#       - appdb
+#     restart: on-failure
+#     networks:
+#       - mynetwork
+#     command: ["./wait-for-it.sh", "appdb:5432", "--", "node", "build/server"]
+#     environment:
+#       - PORT=${PORT}
+#       - ENV=${ENV}
+#       - DATABASE_USER=${DATABASE_USER}
+#       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+#       - DATABASE_NAME=${DATABASE_NAME}
+#       - DATABASE_HOST=${DATABASE_HOST}
+#       - DATABASE_PORT=${DATABASE_PORT}
+#       - JWT_SECRET=${JWT_SECRET}
+
+#   appdb:
+#     image: postgres:latest
+#     volumes:
+#       - ./db/:/docker-entrypoint-initdb.d/:ro
+#       - appdb_data:/var/lib/postgresql/data
+#     restart: on-failure
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       - mynetwork
+#     environment:
+#       POSTGRES_USER: ${DATABASE_USER}
+#       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+#       POSTGRES_DB: ${DATABASE_NAME}
+
+# networks:
+#   mynetwork:
+#     driver: bridge
+
+# volumes:
+#   appdb_data:

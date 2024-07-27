@@ -1,5 +1,10 @@
+-- Create the appdb database
 CREATE DATABASE appdb;
 
+-- Connect to the appdb database
+\c appdb;
+
+-- Create the user table
 CREATE TABLE "user"(
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
@@ -9,11 +14,13 @@ CREATE TABLE "user"(
     password VARCHAR(255) NOT NULL
 );
 
+-- Create the role table
 CREATE TABLE "role"(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
+-- Create the user_role table
 CREATE TABLE user_role(
     user_id SERIAL NOT NULL,
     role_id SERIAL NOT NULL,
@@ -22,6 +29,7 @@ CREATE TABLE user_role(
     foreign key (role_id) references "role" (id) on delete cascade
 );
 
+-- Create the post table
 CREATE TABLE post(
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -32,6 +40,6 @@ CREATE TABLE post(
     FOREIGN KEY (author) REFERENCES "user" (id) ON DELETE CASCADE
 );
 
--- Insert data within the database
+-- Insert data within the user table
 INSERT INTO "user"(username, name, email, cpf, password)
 VALUES ('admin','administrador', 'admin@hotmail.com','12345678912', 'admin');

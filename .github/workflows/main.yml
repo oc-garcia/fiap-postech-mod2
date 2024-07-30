@@ -45,5 +45,7 @@ jobs:
       - name: Push Docker Images with Docker Compose
         run: docker-compose -f docker-compose.yml push
 
-      - name: Push 'latest' Tagged Image to Docker Hub
-        run: docker push $DOCKER_USERNAME/backendblogging:latest
+      - name: Push 'latest' Tagged Images to Docker Hub
+        run: |
+          docker push $DOCKER_USERNAME/server:latest
+          docker push $DOCKER_USERNAME/database:latest

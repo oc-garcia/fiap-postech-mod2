@@ -16,7 +16,7 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DOCKER_TAG: latest
 
     steps:
@@ -32,20 +32,16 @@ jobs:
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
           echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
       - name: Log in to Docker Hub
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Build Docker Images with Docker Compose
-        run: |
-          docker-compose -f docker-compose.yml build --build-arg DOCKER_TAG=${{ env.DOCKER_TAG }}
+      - name: Build Docker Image
+        run: docker build -t $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }} .
 
-      - name: Push Docker Images with Docker Compose
-        run: docker-compose -f docker-compose.yml push
+      - name: Push Docker Image
+        run: docker push $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }}
 
-      - name: Push 'latest' Tagged Images to Docker Hub
-        run: |
-          docker push $DOCKER_USERNAME/server:latest
-          docker push $DOCKER_USERNAME/database:latest
+      - name: Push 'latest' Tagged Image to Docker Hub
+        run: docker tag $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }} $DOCKER_USERNAME/blogging-back:latest && docker push $DOCKER_USERNAME/blogging-back:latest

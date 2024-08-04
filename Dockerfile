@@ -18,8 +18,16 @@ WORKDIR /server
 
 COPY --from=builder /server .
 
+# Load environment variables from .env file
+COPY .env .env
+
 ENV NODE_ENV=production
 
 RUN npm install --only=production
+
+# Expose the port specified in the .env file
+ARG PORT
+ENV PORT=${PORT}
+EXPOSE ${PORT}
 
 CMD ["npm", "run", "start"]

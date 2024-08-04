@@ -38,7 +38,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build Docker Image
-        run: docker build -t $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }} .
+        run: docker build --build-arg PORT=${{ secrets.PORT }} -t $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }} .
 
       - name: Push Docker Image
         run: docker push $DOCKER_USERNAME/blogging-back:${{ env.DOCKER_TAG }}

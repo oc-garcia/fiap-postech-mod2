@@ -15,7 +15,7 @@ app.register(fastifyJwt, {
   sign: { expiresIn: '10h' },
 })
 
-app.addHook('onRequest', validateJWT)
+//app.addHook('onRequest', validateJWT)
 
 app.register(userRoutes)
 app.register(postRoutes)

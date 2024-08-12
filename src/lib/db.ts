@@ -20,7 +20,7 @@ class Database {
   private async connection() {
     try {
       this.client = await this.pool.connect();
-      console.log("Conexão com o banco de dados realizada com sucesso!");
+      console.log("Conexão com o banco de dados realizada com sucesso! Entrega FIAP.");
     } catch (error) {
       console.error(`Erro na conexão, erro: ${error}`);
 

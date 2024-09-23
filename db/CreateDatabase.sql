@@ -33,7 +33,7 @@ CREATE TABLE user_role(
 CREATE TABLE post(
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    content VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
     creation_date TIMESTAMP WITHOUT TIME ZONE,
     update_date TIMESTAMP WITHOUT TIME ZONE,
     author SERIAL NOT NULL,

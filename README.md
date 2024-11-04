@@ -79,5 +79,5 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## Links Úteis
 
-- **Deploy da API:** [https://blogging-back.onrender.com](https://blogging-back.onrender.com)
+- **Deploy da API:** [https://blogging-back.onrender.com](https://blogging-back.onrender.com) (Instância do POSTGRES foi derrubada após avaliação)
 - **Documentação da API:** [https://documenter.getpostman.com/view/27425174/2sA3kdAxqL](https://documenter.getpostman.com/view/27425174/2sA3kdAxqL)
